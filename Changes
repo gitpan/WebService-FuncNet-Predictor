@@ -1,9 +1,14 @@
+
+
 Revision history for WebService-FuncNet-Predictor
+0.11   Wed May 26 13:11:19 BST 2010
+        - Fixed bug with URI coercion reported by Andy Clegg
+        - Predictor object must be given port, service, binding
+          which is passed on to Operation (bug reported by Andy Clegg)
+
 0.10   Mon Jul  6 16:42:10 BST 2009 (r65)
         - Changed distribution name and namespace
         - Minor documentation changes
-
-
 
 Revision history for WebService-Cath-FuncNet
 0.08   Tue May 19 11:03:03 BST 2009 (r8105)

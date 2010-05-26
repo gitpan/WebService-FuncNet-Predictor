@@ -8,7 +8,7 @@ WebService::FuncNet::Predictor::Operation::ScorePairwiseRelations
 
 Represents the 'ScorePairwiseRelations' FuncNet WebService operation
 
-  $ws = WebService::FuncNet::Predictor->new();
+  $ws = WebService::FuncNet::Predictor->new( ... );
   
   @proteins1 = qw( A3EXL0 Q8NFN7 O75865 );
   @proteins2 = qw( Q5SR05 Q9H8H3 P22676 );
@@ -31,9 +31,6 @@ use WebService::FuncNet::Predictor::Operation::ScorePairwiseRelations::Response;
 extends 'WebService::FuncNet::Predictor::Operation';
 
 has '+operation' => ( default => 'ScorePairwiseRelations' );
-has '+port'      => ( default => 'GecoPort' );
-has '+service'   => ( default => sub { (shift)->root->ns_base . 'GecoService' } );
-has '+binding'   => ( default => sub { (shift)->root->ns_base . 'GecoBinding' } );
 has '+response_class' => ( default => 'WebService::FuncNet::Predictor::Operation::ScorePairwiseRelations::Response' );
 
 =head1 METHODS

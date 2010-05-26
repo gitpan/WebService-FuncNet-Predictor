@@ -30,6 +30,4 @@ tests_recursive();
 
 auto_install;
 
-auto_manifest();
-
 WriteAll();

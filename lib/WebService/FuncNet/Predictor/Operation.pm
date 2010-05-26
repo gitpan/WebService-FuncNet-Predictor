@@ -29,10 +29,10 @@ with 'WebService::FuncNet::Predictor::Logable';
 =cut
 
 has 'root'      => ( is => 'ro', isa => 'WebService::FuncNet::Predictor', required => 1 );
-has 'operation' => ( is => 'rw', isa => 'Str', lazy => 1, default => '', required => 1 );
-has 'port'      => ( is => 'rw', isa => 'Str', lazy => 1, default => '', required => 1 );
-has 'service'   => ( is => 'rw', isa => 'Str', lazy => 1, default => '', required => 1 );
-has 'binding'   => ( is => 'rw', isa => 'Str', lazy => 1, default => '', required => 1 );
+has 'operation' => ( is => 'rw', isa => 'Str', required => 1, lazy => 1, default => '' );
+has 'port'      => ( is => 'rw', isa => 'Str', required => 1 );
+has 'service'   => ( is => 'rw', isa => 'Str', required => 1 );
+has 'binding'   => ( is => 'rw', isa => 'Str', required => 1 );
 
 has 'response_class' => ( is => 'rw', isa => 'ClassName', required => 1 );
 

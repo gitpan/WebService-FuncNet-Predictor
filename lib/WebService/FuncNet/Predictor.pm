@@ -8,7 +8,12 @@ WebService::FuncNet::Predictor - Interface to the CATH FuncNet webservice
 
     use WebService::FuncNet::Predictor;
 
-    $ws        = WebService::FuncNet::Predictor->new();
+    $ws = WebService::FuncNet::Predictor->new(
+                    wsdl    => 'http://funcnet.eu/soap/Geco.wsdl',
+                    port    => 'GecoPort',
+                    binding => 'GecoBinding',
+                    service => 'GecoService',
+                 );
     
     @proteins1 = qw( A3EXL0 Q8NFN7 O75865 );
     @proteins2 = qw( Q5SR05 Q9H8H3 P22676 );
@@ -53,8 +58,7 @@ use File::Temp qw( tempfile );
 use Readonly;
 use Data::Dumper;
 
-our $VERSION = "0.10";
-
+our $VERSION = "0.11";
 
 #Readonly my $WSDL_HOST       => 'http://bsmlx47:8080';
 Readonly my $WSDL_HOST       => 'http://funcnet.eu';
@@ -74,12 +78,8 @@ subtype 'Uri'
     => where { $_->isa( 'URI' ) };
 
 coerce 'WebService::FuncNet::Predictor::WSDL'
-    => from 'Uri'
+    => from 'Str|Uri'
         => via { wsdl_from_uri( $_ ) };
-
-coerce 'Uri'
-    => from 'Str'
-        => via { URI::Heuristic::uf_uri( $_ ) };
 
 =head1 ACCESSORS
 
@@ -122,6 +122,52 @@ has 'ns_base' => (
     default => $FUNCNET_NS,
 );
 
+=head2 port
+
+Read-only access to the port string, e.g.
+
+    GecoPort
+
+=cut
+
+has port => (
+    is          => 'ro',
+    isa         => 'Str',
+    required    => 1,
+    predicate   => 'has_port',
+);
+
+=head2 binding
+
+Read-only access to the binding string, e.g.
+
+    GecoBinding
+
+=cut
+
+has binding => (
+    is          => 'ro',
+    isa         => 'Str',
+    required    => 1,
+    predicate   => 'has_binding',
+);
+
+=head2 service
+
+Read-only access to the service string, e.g.
+
+    GecoService
+
+=cut
+
+has service => (
+    is          => 'ro',
+    isa         => 'Str',
+    required    => 1,
+    predicate   => 'has_service',
+);
+
+
 =head1 OPERATIONS
 
 =head2 score_pairwise_relations( \@proteins1, \@proteins2 )
@@ -156,10 +202,13 @@ sub score_pairwise_relations {
     my ( $self, $proteins1_ref, $proteins2_ref ) = @_;
 
     my $op = WebService::FuncNet::Predictor::Operation::ScorePairwiseRelations->new(
-            root => $self
+            root        => $self,
+            service     => $self->service,
+            port        => $self->port,
+            binding     => $self->binding,
         );
     
-    $op->run( $proteins1_ref, $proteins2_ref );
+    return $op->run( $proteins1_ref, $proteins2_ref );
 }
 
 
@@ -354,9 +403,9 @@ modify it under the same terms as Perl itself. See L<perlartistic>.
 
 =head1 REVISION INFO
 
-  Revision:      $Rev: 69 $
+  Revision:      $Rev: 141 $
   Last editor:   $Author: isillitoe $
-  Last updated:  $Date: 2009-07-06 17:52:29 +0100 (Mon, 06 Jul 2009) $
+  Last updated:  $Date: 2010-05-26 14:11:41 +0100 (Wed, 26 May 2010) $
 
 The latest source code for this project can be checked out from:
 
